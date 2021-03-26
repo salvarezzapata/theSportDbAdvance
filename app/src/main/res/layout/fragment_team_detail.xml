@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraintLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <ImageView
+        android:id="@+id/ivTeamBadgeDetail"
+        android:layout_width="0dp"
+        android:layout_height="450dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background" />
+
+    <ImageView
+        android:id="@+id/ivTeamJerseyDetail"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ivTeamBadgeDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivTeamBadgeDetail"
+        app:layout_constraintVertical_bias="0.508"
+        app:srcCompat="@drawable/face" />
+
+    <TextView
+        android:id="@+id/tvTeamFoundationDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="1921"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/tvTeamFoundationDetailStatic"
+        app:layout_constraintEnd_toEndOf="@+id/tvTeamFoundationDetailStatic"
+        app:layout_constraintStart_toStartOf="@+id/tvTeamFoundationDetailStatic" />
+
+    <TextView
+        android:id="@+id/tvTeamFoundationDetailStatic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Team foundation year"
+        app:layout_constraintBottom_toBottomOf="@+id/ivTeamJerseyDetail"
+        app:layout_constraintStart_toEndOf="@+id/ivTeamJerseyDetail" />
+
+    <TextView
+        android:id="@+id/tvTeamNameDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="Team Name"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/ivTeamJerseyDetail"
+        app:layout_constraintStart_toStartOf="@+id/ivTeamJerseyDetail"
+        app:layout_constraintTop_toBottomOf="@+id/ivTeamJerseyDetail" />
+
+    <TextView
+        android:id="@+id/tvTeamDescriptionDetail"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTeamNameDetail" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

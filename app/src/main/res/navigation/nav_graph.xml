@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/teamListFragment">
+
+    <fragment
+        android:id="@+id/teamListFragment"
+        android:name="com.practice.thesportdbadvance.teamlist.view.TeamListFragment"
+        android:label="fragment_team_list"
+        tools:layout="@layout/fragment_team_list" >
+        <action
+            android:id="@+id/action_teamListFragment_to_teamDetailFragment"
+            app:destination="@id/teamDetailFragment" />
+        <action
+            android:id="@+id/action_teamListFragment_to_leagueListFragment"
+            app:destination="@id/leagueListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/teamDetailFragment"
+        android:name="com.practice.thesportdbadvance.teamdetail.view.TeamDetailFragment"
+        android:label="TeamDetailFragment"
+        tools:layout="@layout/fragment_team_detail">
+        <action
+            android:id="@+id/action_teamDetailFragment_to_teamListFragment"
+            app:destination="@id/teamListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/leagueListFragment"
+        android:name="com.practice.thesportdbadvance.league.LeagueListFragment"
+        android:label="fragment_league_list"
+        tools:layout="@layout/fragment_league_list" >
+        <action
+            android:id="@+id/action_leagueListFragment_to_teamListFragment"
+            app:destination="@id/teamListFragment" />
+    </fragment>
+
+</navigation>
