@@ -1,4 +1,4 @@
-package com.practice.thesportdbadvance.di
+package com.practice.data.di
 
 import com.practice.data.network.SportService
 import com.practice.data.repository.RetrofitTeamRepository

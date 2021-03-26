@@ -2,6 +2,7 @@ package com.practice.thesportdbadvance.di
 
 import android.app.Application
 import com.practice.thesportdbadvance.SportApplication
+import com.practice.usecase.di.UseCaseModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector
@@ -24,5 +25,4 @@ interface AppComponent : AndroidInjector<SportApplication> {
     interface Factory {
         fun create(@BindsInstance application: Application): AppComponent
     }
-
 }
