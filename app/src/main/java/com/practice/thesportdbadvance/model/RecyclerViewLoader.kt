@@ -6,7 +6,7 @@ import com.ethanhua.skeleton.Skeleton
 import com.practice.thesportdbadvance.R
 
 class RecyclerViewLoader(private val recyclerView: RecyclerView) : ScreenLoader() {
-
+//class RecyclerViewLoader(private val recyclerView: RecyclerView) : ScreenLoader<RecyclerView>()
     private var recyclerViewSkeletonScreen: RecyclerViewSkeletonScreen? = null
 
     override fun isConfigurationOn(): Boolean {

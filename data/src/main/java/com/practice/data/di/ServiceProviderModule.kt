@@ -1,4 +1,4 @@
-package com.practice.thesportdbadvance.di
+package com.practice.data.di
 
 import com.practice.data.network.BASE_URL
 import com.practice.data.network.RetrofitInterceptor

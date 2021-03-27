@@ -21,7 +21,6 @@ class TeamListViewModel @Inject constructor(private val getTeamsUseCase: GetTeam
         MutableLiveData<Boolean>()
     }
 
-
     fun getTeams(league: String) {
         viewModelScope.launch {
             loadingLiveData.value = true

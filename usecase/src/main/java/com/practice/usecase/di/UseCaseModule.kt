@@ -1,5 +1,6 @@
-package com.practice.thesportdbadvance.di
+package com.practice.usecase.di
 
+import com.practice.data.di.RepositoryModule
 import com.practice.data.repository.RetrofitTeamRepository
 import com.practice.usecase.GetTeamsUseCase
 import dagger.Module
