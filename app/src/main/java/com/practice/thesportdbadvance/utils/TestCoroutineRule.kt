@@ -1,6 +1,7 @@
 package com.practice.thesportdbadvance.utils
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -12,8 +13,10 @@ import org.junit.runners.model.Statement
 class TestCoroutineRule : TestRule {
 
     private val job = SupervisorJob()
+    @ExperimentalCoroutinesApi
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
 
+    @ExperimentalCoroutinesApi
     override fun apply(base: Statement?, description: Description?): Statement {
         return object : Statement() {
             override fun evaluate() {
