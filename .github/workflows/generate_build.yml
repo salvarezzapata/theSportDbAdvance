@@ -17,7 +17,7 @@ jobs:
           java-version: 1.8
 
       - name: Build debug apk
-        run: ./gradlew assembleRelease
+        run: ./gradlew assembleDebug
 
       - name: List artifact APK
         run: ls -la
