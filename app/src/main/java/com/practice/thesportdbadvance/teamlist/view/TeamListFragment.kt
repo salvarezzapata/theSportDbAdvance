@@ -35,7 +35,7 @@ class TeamListFragment : DaggerFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTeamListBinding.inflate(layoutInflater, container, false)
         return binding.root
     }

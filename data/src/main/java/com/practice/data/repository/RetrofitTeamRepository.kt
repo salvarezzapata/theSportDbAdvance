@@ -13,8 +13,8 @@ class RetrofitTeamRepository @Inject constructor(private val sportService: Sport
     override fun getTeams(league: String): Flow<List<Team>> {
         try {
             return flow {
-                val teams: List<Team> = sportService.getTeams(league).apiTeams.map {
-                        apiTeam: APITeam -> apiTeam.apiTeamToTeam()
+                val teams: List<Team> = sportService.getTeams(league).apiTeams.map { apiTeam: APITeam ->
+                    apiTeam.apiTeamToTeam()
                 }
                 emit(teams)
             }
