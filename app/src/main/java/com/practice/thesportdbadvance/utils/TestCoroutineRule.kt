@@ -1,5 +1,6 @@
 package com.practice.thesportdbadvance.utils
 
+import com.practice.domain.model.CoroutinesContextProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
@@ -15,6 +16,7 @@ class TestCoroutineRule : TestRule {
     private val job = SupervisorJob()
     @ExperimentalCoroutinesApi
     private val testCoroutineDispatcher = TestCoroutineDispatcher()
+    val coroutineContextProvider = CoroutinesContextProvider(testCoroutineDispatcher, testCoroutineDispatcher)
 
     @ExperimentalCoroutinesApi
     override fun apply(base: Statement?, description: Description?): Statement {

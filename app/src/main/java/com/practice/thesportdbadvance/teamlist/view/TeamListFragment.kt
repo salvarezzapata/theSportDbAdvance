@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.practice.thesportdbadvance.TeamListScreenState
 import com.practice.thesportdbadvance.databinding.FragmentTeamListBinding
 import com.practice.thesportdbadvance.model.RecyclerViewLoader
 import com.practice.thesportdbadvance.model.ScreenLoader
@@ -14,6 +16,7 @@ import com.practice.thesportdbadvance.teamlist.TeamListViewModel
 import dagger.android.support.DaggerFragment
 
 import javax.inject.Inject
+import kotlinx.coroutines.flow.collect
 
 class TeamListFragment : DaggerFragment() {
 
@@ -48,17 +51,30 @@ class TeamListFragment : DaggerFragment() {
     }
 
     private fun executeObservables() {
-        teamListViewModel.teamsLiveData.observe(viewLifecycleOwner, Observer {
-            val adapter = TeamAdapter(it)
-            binding.rvTeams.adapter = adapter
-        })
+        lifecycleScope.launchWhenResumed {
+            teamListViewModel.stateFlowList.collect { screenState: TeamListScreenState ->
+                when (screenState) {
+                    is TeamListScreenState.Loading -> {
+                        screenLoader.show()
+                    }
 
-        teamListViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer {
-            if(it) {
-                screenLoader.show()
-            } else {
-                screenLoader.hide()
+                    is TeamListScreenState.Success.TeamsLoaded -> {
+                        screenLoader.hide()
+                        val adapter = TeamAdapter(screenState.viewTeams)
+                        binding.rvTeams.adapter = adapter
+                    }
+
+                    is TeamListScreenState.Success.EmptyTeams -> {
+                        screenLoader.hide()
+                        val adapter = TeamAdapter(screenState.viewTeams)
+                        binding.rvTeams.adapter = adapter
+                    }
+
+                    is TeamListScreenState.Error -> {
+                        screenLoader.hide()
+                    }
+                }
             }
-        })
+        }
     }
 }

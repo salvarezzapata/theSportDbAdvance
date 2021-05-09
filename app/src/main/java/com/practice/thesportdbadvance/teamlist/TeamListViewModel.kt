@@ -5,46 +5,43 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.practice.domain.model.CoroutinesContextProvider
+import com.practice.domain.model.Team
+import com.practice.thesportdbadvance.TeamListScreenState
 import com.practice.thesportdbadvance.model.ViewTeam
 import com.practice.usecase.GetTeamsUseCase
 import javax.inject.Inject
-import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 
-class TeamListViewModel @Inject constructor(private val coroutinesContextProvider: CoroutinesContextProvider, private val getTeamsUseCase: GetTeamsUseCase) : ViewModel() {
+class TeamListViewModel @Inject constructor(
+    private val coroutinesContextProvider: CoroutinesContextProvider,
+    private val getTeamsUseCase: GetTeamsUseCase
+) : ViewModel() {
 
-    val teamsLiveData: MutableLiveData<List<ViewTeam>> by lazy {
-        MutableLiveData<List<ViewTeam>>()
-    }
-
-    val loadingLiveData: MutableLiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>()
-    }
+    val stateFlowList: MutableStateFlow<TeamListScreenState> = MutableStateFlow(TeamListScreenState.Loading)
 
     fun getTeams(league: String) {
-        viewModelScope.launch {
-            try {
-                getTeamsUseCase.invoke(league)
-                    .onStart {
-                        loadingLiveData.postValue(true)
+        try {
+            getTeamsUseCase.invoke(league).map { teams: List<Team> ->
+                stateFlowList.value = TeamListScreenState.Success.TeamsLoaded(
+                    teams.map {
+                        ViewTeam(it)
                     }
-                    .onCompletion {
-                        loadingLiveData.postValue(false)
-                    }
-                    .flowOn(coroutinesContextProvider.backgroundContext)
-                    .collect {teams ->
-                        teamsLiveData.postValue(teams.map {
-                            ViewTeam(it)
-                        })
-                    }
-            } catch (exception: Exception) {
-                loadingLiveData.value = false
-                Log.e("myerror", exception.message!!)
-            }
+                )
+            }.onStart {
+                stateFlowList.value = TeamListScreenState.Loading
+            }.flowOn(coroutinesContextProvider.backgroundContext)
+            .launchIn(viewModelScope)
+        } catch (exception: Exception) {
+            stateFlowList.value = TeamListScreenState.Error(exception)
+            Log.e("myerror", exception.message!!)
         }
     }
 }
