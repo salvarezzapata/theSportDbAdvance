@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import com.practice.thesportdbadvance.TeamListScreenState
 import com.practice.thesportdbadvance.databinding.FragmentTeamListBinding
 import com.practice.thesportdbadvance.model.RecyclerViewLoader
 import com.practice.thesportdbadvance.model.ScreenLoader
@@ -14,13 +15,9 @@ import com.practice.thesportdbadvance.teamlist.TeamListViewModel
 import dagger.android.support.DaggerFragment
 
 import javax.inject.Inject
-
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import kotlinx.coroutines.flow.collect
 
 class TeamListFragment : DaggerFragment() {
-    private var param1: String? = null
-    private var param2: String? = null
 
     private lateinit var screenLoader: ScreenLoader
 
@@ -35,16 +32,12 @@ class TeamListFragment : DaggerFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTeamListBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -57,28 +50,30 @@ class TeamListFragment : DaggerFragment() {
     }
 
     private fun executeObservables() {
-        teamListViewModel.teamsLiveData.observe(viewLifecycleOwner, Observer {
-            val adapter = TeamAdapter(it)
-            binding.rvTeams.adapter = adapter
-        })
+        lifecycleScope.launchWhenResumed {
+            teamListViewModel.stateFlowList.collect { screenState: TeamListScreenState ->
+                when (screenState) {
+                    is TeamListScreenState.Loading -> {
+                        screenLoader.show()
+                    }
 
-        teamListViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer {
-            if(it) {
-                screenLoader.show()
-            } else {
-                screenLoader.hide()
-            }
-        })
-    }
+                    is TeamListScreenState.Success.TeamsLoaded -> {
+                        screenLoader.hide()
+                        val adapter = TeamAdapter(screenState.viewTeams)
+                        binding.rvTeams.adapter = adapter
+                    }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TeamListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    is TeamListScreenState.Success.EmptyTeams -> {
+                        screenLoader.hide()
+                        val adapter = TeamAdapter(screenState.viewTeams)
+                        binding.rvTeams.adapter = adapter
+                    }
+
+                    is TeamListScreenState.Error -> {
+                        screenLoader.hide()
+                    }
                 }
             }
+        }
     }
 }
